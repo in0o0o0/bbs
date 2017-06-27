@@ -1,0 +1,81 @@
+
+@charset "UTF-8";
+
+/* --- 全体の背景・テキスト --- */
+body {
+margin: 0;
+padding: 0;
+background-color: #ffffff; /* ページの背景色 */
+color: #000000; /* 全体の文字色 */
+font-size: 100%; /* 全体の文字サイズ */
+}
+
+/* --- 全体のリンクテキスト --- */
+
+a.white:link { color: #ffffff; text-decoration: none;}
+a.white:visited { color: #ffffff; text-decoration: none;}
+/*a:hover { color: #ff0000; }*/
+a:active { color: #ff0000; }
+
+/* --- コンテナ --- */
+#container {
+width: 780px; /* ページの幅 */
+margin: 0 auto; /* センタリング */
+/*background: url(sidebar_300.gif) repeat-y left; サイドバーの背景画像 */
+background-color: #ffffff; /* メインカラムの背景色 */
+border-left: 1px #c0c0c0 solid; /* 左の境界線 */
+border-right: 1px #c0c0c0 solid; /* 右の境界線 */
+}
+
+/* --- ヘッダ --- */
+#header {
+background-color: #3399cc; /* ヘッダの背景色 */
+}
+
+
+
+/* --- メインカラム１ --- */
+/*アンケートと結果に使った*/
+#content {
+float: left;
+width: 780px; /* メインカラムの幅 */
+}
+
+/* --- メインカラム --- */
+/*個人ページに使った*/
+#content2 {
+float: left;
+width: 480px; /* メインカラムの幅 */
+}
+
+/* --- ナビゲーション --- */
+#nav {
+float: left;
+width: 250px; /* サイドバーの幅 */
+}
+
+/* --- フッタ --- */
+#footer {
+clear: left; /* フロートのクリア */
+width: 100%;
+background-color: #3399cc /* フッタの背景色 */
+
+}
+
+h1{
+  background:#3399cc;
+  padding:20px 0;
+  font-size:140%;
+  font-weight:300;
+  text-align:center;
+  color:#ffffff;
+}
+
+
+#profileImg{
+	padding:10px 12px;
+	margin-bottom:10px;
+	text-align:center;
+}
+
+
