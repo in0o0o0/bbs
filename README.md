@@ -6,7 +6,10 @@
 # DEMO
 [デモ動画](https://www.youtube.com/watch?v=TLU0xYyxvPQ)
 
-# テーブル
+# MySQL DBについて
+BBSというDBにユーザ名root,パスワードrootで接続してます．
+
+以下は使用しているテーブル一覧です．
 
 ### user_data（ユーザの登録情報を入れる）
 
