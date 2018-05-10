@@ -40,7 +40,7 @@ if(!isset($_COOKIE['id'] )){
 	</header>
 <?php
 	
-	echo "投稿日時:<time>".$time."</time><br>"; 
+	echo "投稿日時:<time>".$write_time."</time><br>"; 
 	echo $content;
 ?>
 
