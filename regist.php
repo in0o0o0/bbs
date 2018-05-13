@@ -58,49 +58,22 @@ if (!empty($_POST)) {
 		}
 	}
 
-
 	//登録成功
-	if(!isset($error)){
-		//fputcsv($pfp, Array($id,hash("SHA256",$pw)));//ID&パスワード情報を記録する
-		//fputcsv($nfp, Array($id,$name));//ID&ニックネーム情報を記録する
-			
+	if(!isset($error)){	
 		//登録日時を記録する
 		//$filename= "./information/".$id.".csv";
 		date_default_timezone_set('Asia/Tokyo');
 			
-		//if(!file_exists($filename))
-		//	touch($filename);
-				
-		//$fp=fopen($filename,"r+");
-		//flock($fp,LOCK_EX);
-			
 		$time=date("Y/m/j");
-		//$data=$time.",".$name.",,,,,,";
-			
-		//fputs($fp, $data);
-			
-		//flock($fp,LOCK_UN);
-		//fclose($fp);
 
 		$hashed_pw=hash("SHA512",$pw);
 		
-		
-
 		#データの挿入
 		mysqli_query($db,"INSERT INTO user_data SET id='{$id}', password='{$hashed_pw}', registration_date='{$time}', nickname='{$name}',img_url='./picture/sample.png';");
-
 
 		setcookie('id',$id, time()+60*60*24*14);
 		setcookie('name',$name, time()+60*60*24*14);
 		header('Location:index.php');
-	}
-	if($iFlag){
-		flock($pfp,LOCK_UN);
-		fclose($pfp);
-	}
-	if($nFlag){
-		flock($nfp,LOCK_UN);
-		fclose($nfp);
 	}
 }
 ?>
