@@ -6,7 +6,7 @@ if(!isset($_COOKIE['id'] )){
 	exit();
 }
 
-#データベースへの接続	
+#データベースへの接続
 $db=mysqli_connect('localhost','root','root','bbs') or
 die(mysqli_error($db));
 
@@ -33,30 +33,30 @@ if (!empty($_POST)) {
 		}else{
 			$error['name']="blank";
 		}
-		
+
 		if (isset($_POST['sex'])) {
 			$data['sex'] = $_POST['sex'];
 		}
-	
+
 		if (isset($_POST['age'])) {
 			$data['age'] = $_POST['age'];
 		}
 
-	
+
 		if (isset($_POST['content'])) {
 			$data['content'] = $_POST['content'];
 			if(strlen($data['content'])>200)
 				$error['content']=true;
 		}
-	
+
 		if ($_POST['url']!="") {
-			$data['url'] = $_POST['url'];	
-			
+			$data['url'] = $_POST['url'];
+
 			if (!preg_match('/^(https?|ftp)(:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+)$/',$data['url'] )) {
     			$error['url']=true;
-			} 
-		}	
-		
+			}
+		}
+
 		if(isset($_FILES['image']['name'])){
 			$fileName = $_FILES['image']['name'];
 			if (!empty($fileName)) {
@@ -87,7 +87,7 @@ if (!empty($_POST)) {
 			$data['url']=str_replace(array("\r\n", "\r", "\n"),"<br>",$data['url']);
 			$data['img']=htmlspecialchars($_POST['himg']);
 			$data['img']=str_replace(array("\r\n", "\r", "\n"),"<br>",$data['img']);
-			
+
 			$_COOKIE['name'] = $data['name'];
 			if (strlen($data['content'])==0){
 				$data['content']=null;
@@ -111,16 +111,14 @@ if (!empty($_POST)) {
 		#DBのupdateを行う
 		mysqli_query($db,"UPDATE user_data SET nickname='{$data["name"]}', gender='{$data["sex"]}', age='{$data["age"]}',self_introduction='{$data["content"]}', web_url='{$data["url"]}', img_url='{$data["img"]}' WHERE id='{$_COOKIE["id"]}';");
 		
-		#cho "UPDATE user_data SET nickname='{$data["name"]}', gender='{$data["sex"]}', self_introduction='{$data["content"]}', web_url='{$data["url"]}', img_url='{$data["img"]}' WHERE id='{$_COOKIE["id"]}';";
-		#die();
-		#記入内容の確認のために個人ページに飛ぶ 
+		#記入内容の確認のために個人ページに飛ぶ
 		header("Location: personal.php?name={$data['name']}");
 		exit();
 	}
 
 }else{#最初はファイルに登録されている情報を表示する
 
-	#データベースへの接続	
+	#データベースへの接続
 	$db=mysqli_connect('localhost','root','root','bbs') or
 	die(mysqli_error($db));
 
@@ -192,11 +190,11 @@ if (!empty($_POST)) {
 				<option value="21" <?php if($data['age']==21) echo "selected";?>>21</option>
 				<option value="22" <?php if($data['age']==22) echo "selected";?>>22</option>
 				<option value="23" <?php if($data['age']==23) echo "selected";?>>23歳以上</option>
-				
+
 			</select>
 		</td>
 	</tr>
-	
+
 	<tr>
 		<td class="title">自己紹介<div class="caution">※全角100文字以内</div></td >
 		<td class="content">
@@ -206,7 +204,7 @@ if (!empty($_POST)) {
 			<textarea name="content" cols="40" rows="4" id="input3" value=""><?php if(isset($data['content'])) echo $data['content'];?></textarea>
 		</td>
 	</tr>
-	
+
 	<tr>
 		<td class="title">サイト<div class="caution">(URL)</div></td>
 		<td class="content">
@@ -224,18 +222,18 @@ if (!empty($_POST)) {
 
 
 		<img src="
-			<?php 
-				if(strlen($data['image'])==0) 
+			<?php
+				if(strlen($data['image'])==0)
 					echo "./picture/sample.png";
 				else
 					echo $data['image'];
-					
-			?>" 
+
+			?>"
 			alt="プロフィール画像" name="img_profile" border="0"  witdh="150" height="150"><br>
 		<?php if(isset($data['image'])) echo ' <input type="hidden" name="himg" value="'.$data["image"].'">';?>
 			<ul>
 				<li>ファイル形式：JPG、GIF、PNG </li>
-				<li>※「ファイルアップロード」ボタンを押すとアップロードされた画像が表示されます。</li>				
+				<li>※「ファイルアップロード」ボタンを押すとアップロードされた画像が表示されます。</li>
 			</ul>
 	</td>
 	</tr>

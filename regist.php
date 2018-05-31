@@ -66,7 +66,6 @@ if (!empty($_POST)) {
 	//登録成功
 	if(!isset($error)){
 		//登録日時を記録する
-		//$filename= "./information/".$id.".csv";
 		date_default_timezone_set('Asia/Tokyo');
 
 		$time=date("Y/m/j");

@@ -7,8 +7,8 @@
 <body>
 <?php
 header("Content-type: text/html; charset=utf-8");
- 
-#データベースへの接続	
+
+#データベースへの接続
 $db=mysqli_connect('localhost','root','root','bbs') or
 die(mysqli_error($db));
 
@@ -20,7 +20,7 @@ $thread_name=$_GET['thread'];
 
  #パラメータが設定されていない
 if( !array_key_exists( 'thread',$_GET ) ){
-    
+
    echo "threadパラメータが指定されてません";
 
 #パラメータが指定されている
@@ -31,7 +31,7 @@ if( !array_key_exists( 'thread',$_GET ) ){
 	#スレッドが存在しないとき
 	if($result['num']==0){
 		echo '<table width="100%" border="1" cellspacing="0" cellpadding="10"><tr><td><b>ERROR!!<br><br>指定されたスレッドは存在しません</b></td></tr></table>';
-	
+
 	#スレッドが存在する場合
 	}else{
 		#sizeが正しい形式か調べる
@@ -39,7 +39,7 @@ if( !array_key_exists( 'thread',$_GET ) ){
 
 			$data=array(); #書き込みをいれる
 			$count=0;      #書き込み数をいれる
-		
+
 			#スレッドからデータを取り出す
 			$records=mysqli_query($db,"SELECT * FROM {$_GET['thread']};");
 
@@ -48,8 +48,8 @@ if( !array_key_exists( 'thread',$_GET ) ){
 				$name=mysqli_fetch_assoc(mysqli_query($db,"SELECT * FROM user_data WHERE id='{$tmp}';"));
 				array_push($data,array('id'=>$record['id'],'nickname'=>$name['nickname'],'write_time'=>$record['write_time'],'content'=>$record['content']));
 			}
-			
-			
+
+
 			#書き込みの数を調べる
 			$cnt = count($data);
 
@@ -65,12 +65,12 @@ if( !array_key_exists( 'thread',$_GET ) ){
 			#すべて表示するとき
 			if(!isset($_GET['size']) || preg_match('/^-$/',$size)){
 				$end=$cnt;
-			
+
 			#最新○○個パターン
 			}else if(substr($size,0,1)=='l'){#頭文字がlになっている
 				$x=substr($size,1);
 				if($x>=$cnt)	//要求以下のレスしかない（すべて表示）
-					$end=$cnt; 
+					$end=$cnt;
 				else{
 					$one=true;
 					$start=$cnt-$x;
@@ -84,11 +84,11 @@ if( !array_key_exists( 'thread',$_GET ) ){
 					$tmp=$count[0];
 					$count[0]=$count[1];
 					$count[1]=$tmp;
-				}	
+				}
 				#5000-3000とかの時（両方範囲に入っていない）
 				if($count[0]>$cnt){
 					$start=0;
-					$end=1;		
+					$end=1;
 				}else{
 					if($count[0]<=1)#0-?のとき
 						$start=0;
@@ -96,13 +96,13 @@ if( !array_key_exists( 'thread',$_GET ) ){
 						$one=true;
 						$start=$count[0]-1;
 					}
-						
+
 					if($count[1]>=$cnt)
 						$end=$cnt;
 					else
 						$end=$count[1];
 				}
-			
+
 			#-200パターン
 			}else if(preg_match('/^-[0-9]+$/',$size)){
 				$x=substr($size,1);
@@ -113,7 +113,7 @@ if( !array_key_exists( 'thread',$_GET ) ){
 					$start=0;
 					$end=$x;
 				}
-				
+
 			#200-パターン
 			}else if(preg_match('/^[0-9]+-$/',$size)){
 				$x=substr($size,0,-1);
@@ -129,7 +129,7 @@ if( !array_key_exists( 'thread',$_GET ) ){
 						$start=$x-1;
 					$end=$cnt;
 				}
-			
+
 			#200パターン
 			}else if(preg_match('/^[0-9]+$/',$size)){
 				if($size>$cnt)
@@ -139,21 +139,21 @@ if( !array_key_exists( 'thread',$_GET ) ){
 					$end=$size;
 				}
 			}
-			
+
 			#以下前100と次100を作る処理
-			
+
 			#前100を決める
 			if($start-1<=0){
 				$bs=1;
-				$be=1;	
+				$be=1;
 			}else if($start-100<=0){
 				$bs=1;
 				$be=$start;
 			}else{
 				$bs=$start-99;
-				$be=$start;		
+				$be=$start;
 			}
-			
+
 			#次100を決める
 			if($end+1>=$cnt){
 				$ns=$end;
@@ -170,19 +170,19 @@ if( !array_key_exists( 'thread',$_GET ) ){
 			if(!isset($error)){
 				#タイトルを表示
 				echo "<h1 class='thread-title'>".$thread_name."</h1>";
-				
+
 				#idとニックネームの関連を調べる
 				$records=mysqli_query($db,"SELECT * FROM user_data;");
-				
+
 				$id_to_nickname = array();#idがキーでvaludeがニックネーム
-				
+
 				#連想配列に入れる
 				while ($record = mysqli_fetch_assoc($records)){
 					$id_to_nickname["{$record['id']}"] = "{$record['nickname']}";
 				}
 
 				#一つ目を別に表示しないといけない時
-				if($one){	
+				if($one){
 					echo "<p>".sprintf('%03d',1).": <strong><a href='personal.php?name={$data[0]["nickname"]}' target='_top'>{$data[0]["nickname"]}</a></strong>: ";
 					echo $data[0]['write_time']."<br><dd>".$data[0]['content']."</dd></p>\n";
 				}
@@ -190,8 +190,8 @@ if( !array_key_exists( 'thread',$_GET ) ){
 				#最初から順番に最後まで表示すればいいとき
 				for($i=$start;$i<$end;$i++){
 					echo "<p>".sprintf('%03d',$i+1).": <strong><a href='personal.php?name={$data[$i]["nickname"]}' target='_top'>{$data[$i]['nickname']}</a></strong>：{$data[$i]['write_time']}<br><dd>{$data[$i]['content']}</dd></p>\n";
-				}	
-			}#if(!isset($error))	
+				}
+			}	
 		}else{#sizeが正しい形式か調べる
 			$error=detect;
 		}
@@ -205,15 +205,15 @@ if( !array_key_exists( 'thread',$_GET ) ){
 </p><hr>
 <?php elseif(isset($error)) : ?>
 	<table width="100%" border="1" cellspacing="0" cellpadding="10"><tr><td><b>ERROR!!<br><br>レス番号が正しくありません</b></td></tr></table>
-<?php endif; 
-		
+<?php endif;
+
 		if(!isset($error)){
 			if(isset( $_GET["flag"])){//トップページに表示する時
-				echo '<a href="thread.php?thread='.$_GET["thread"].'" target="_top"> 全部読む</a> &nbsp;'; 
+				echo '<a href="thread.php?thread='.$_GET["thread"].'" target="_top"> 全部読む</a> &nbsp;';
 				echo '<a href="thread.php?thread='. $_GET["thread"].'&size=l50"  target="_top">最新50 </a> &nbsp;';
 				echo '<a href="thread.php?thread='.$_GET["thread"].'&size=1-100"  target="_top">1-100 </a> &nbsp;';
 			}else{//別ウィンドウでスレッドを表示する時
-				echo '<a href="index.php" target="_top">■掲示板に戻る■</a> &nbsp;'; 
+				echo '<a href="index.php" target="_top">■掲示板に戻る■</a> &nbsp;';
 				echo '<a href="thread.php?thread='. $_GET["thread"].'" target="_top">全部</a> &nbsp;';
 				echo '<a href="thread.php?thread='.$_GET["thread"].'&size='.$bs.'-'.$be.'"  target="_top">前100:</a> &nbsp;';
 				echo '<a href="thread.php?thread='.$_GET["thread"].'&size='.$ns.'-'.$ne.'"  target="_top">次100:</a> &nbsp;';
@@ -225,5 +225,4 @@ if( !array_key_exists( 'thread',$_GET ) ){
 ?>
 </div>
 </body>
-</html> 
-
+</html>

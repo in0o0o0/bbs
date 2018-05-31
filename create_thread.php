@@ -12,11 +12,11 @@ if (!empty($_POST)) {
 	if ($_POST['content'] == '') {
 		$error['content'] = 'blank';
 	}
-	
+
 	#すべて記入されている
 	if (empty($error)) {
 
-		#データベースへの接続	
+		#データベースへの接続
 		$db=mysqli_connect('localhost','root','root','bbs') or
 		die(mysqli_error($db));
 
@@ -26,10 +26,9 @@ if (!empty($_POST)) {
 
 		$file_name=$_POST['title'];
 
-		
+
 		#同じスレッドが存在していないか調べる
 		$result=mysqli_fetch_assoc(mysqli_query($db,"SELECT COUNT(*) AS num FROM thread_list WHERE thread_title='{$_POST["title"]}';"));
-		#echo "SELECT COUNT(*) AS num FROM thread_list WHERE thread_title='{$_POST["title"]}';";
 
 		#同じスレッドが存在していなかったとき
 		if ($result['num']==0){
@@ -37,7 +36,7 @@ if (!empty($_POST)) {
 		 	$timestamp=time();
 		 	$time=date("Y/m/j/ H:i:s");
 			$content=htmlspecialchars($_POST["content"]);
-			$content=preg_replace('/\n|\r|\r\n/',"<br>",$content);#改行文字の処理  
+			$content=preg_replace('/\n|\r|\r\n/',"<br>",$content);#改行文字の処理
 
 			#スレッドリストへの挿入
 			mysqli_query($db,"INSERT INTO thread_list SET thread_title='{$_POST["title"]}',registration_time='{$timestamp}',last_modified_time='{$timestamp}';");
@@ -48,11 +47,11 @@ if (!empty($_POST)) {
 			#データの挿入
 			mysqli_query($db,"INSERT INTO {$_POST["title"]} SET id=' {$_COOKIE["id"]}',write_time='{$time}', content='{$content}';");
 
-			header("Location: ./thread.php?thread=${file_name}");    
+			header("Location: ./thread.php?thread=${file_name}");
 		}else{
     		#すで同じスレッドが存在するとき
     		echo('※すでに同じスレッドが存在しています');
-    		
+
   		}
 	}
 }
@@ -89,5 +88,3 @@ if (!empty($_POST)) {
 <a href="./index.php" >掲示板に戻る</a>
 </body>
 </html>
-
-
