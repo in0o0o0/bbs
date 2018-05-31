@@ -1,5 +1,11 @@
 <?php
 
+$error = array(
+	"id" => "",
+	"password" => "",
+	"nickname" => ""
+)
+
 if (!empty($_POST)) {
 
 	#データベースへの接続
