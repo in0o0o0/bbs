@@ -4,7 +4,7 @@ $error = array(
 	"id" => "",
 	"password" => "",
 	"nickname" => ""
-)
+);
 
 if (!empty($_POST)) {
 
@@ -64,7 +64,7 @@ if (!empty($_POST)) {
 	}
 
 	//登録成功
-	if(!isset($error)){
+	if($error["id"] == "" and $error["password"] == "" and $error["nickname"] == ""){
 		//登録日時を記録する
 		date_default_timezone_set('Asia/Tokyo');
 
