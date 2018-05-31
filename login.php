@@ -38,6 +38,10 @@ if (!empty($_POST)) {
 		if($_POST['password']=='')
 			$error['password']='blank';
 	}
+}else{
+	$error['id'] ='';
+	$error['password'] ='';
+	$error['login'] ='';
 }
 ?>
 
