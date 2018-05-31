@@ -3,6 +3,8 @@
 if(!isset($_COOKIE['id'] )){
 	header('Location: login.php');
 	exit();
+}else{
+	header("Content-Type: text/html; charset=UTF-8");
 }
 ?>
 <html>
@@ -25,11 +27,11 @@ if(!isset($_COOKIE['id'] )){
 <hr>
 
 <?php
-header("Content-Type: text/html; charset=UTF-8");
+
 error_reporting(E_ALL ^ E_NOTICE);
 $max=10;//トップページに表示するスレッドの数
 
-#データベースへの接続	
+#データベースへの接続
 $db=mysqli_connect('localhost','root','root','bbs') or
 die(mysqli_error($db));
 
@@ -38,7 +40,7 @@ mysqli_set_charset($db,'utf-8');
 
 #スレッド一覧を表示するための枠--ここから--
 echo '<table border="1" cellspacing="11" cellpadding="2" width="80%" bgcolor="#CCFFCC" align="center"><tr><td>';
- 
+
 
 #作られているthreadの数を調べる
 $results=mysqli_fetch_assoc(mysqli_query($db,"SELECT COUNT(*) AS num FROM thread_list;"));
@@ -61,7 +63,7 @@ if($number_of_thread==0){
 
 	while ($record = mysqli_fetch_assoc($records)){
 		$each_thread_result=mysqli_fetch_assoc(mysqli_query($db,"SELECT COUNT(*) AS num FROM {$record["thread_title"]};"));
-		
+
 		#リンクの作成「1:test(5)」のような形式
 		echo "<a href = thread.php?thread={$record['thread_title']}&size=l50>".($cnt+1)."</a>:<a href= '#{$cnt}'>{$record['thread_title']}({$each_thread_result['num']})</a> / ";
 
@@ -73,9 +75,9 @@ if($number_of_thread==0){
 	echo  " </td> </tr></table><br>";
 	#スレッド一覧を表示するための枠--ここまで--
 
-	echo '<Div Align="center">';	
+	echo '<Div Align="center">';
 
-	#個々のthreadの内容表示 
+	#個々のthreadの内容表示
 	$cnt=0;#何番目のthreadか
 	foreach($thread_data as $data){
 		echo '<table border="1" cellspacing="11" cellpadding="2" bgcolor="#efefef" width="80%"  align="center"><tr><td>';
@@ -86,7 +88,7 @@ if($number_of_thread==0){
 		$cnt+=1;
 	}
 }
-?> 
+?>
 
 
 
@@ -116,4 +118,4 @@ function adjust_frame_css(F){
 </div>
 <!-- フッタ終了 -->
 </body>
-</html> 
+</html>
