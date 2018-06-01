@@ -10,16 +10,16 @@ if (!empty($_POST)) {
 		$flag=false; #パスワードが一致したかどうか
 
 		#データベースへの接続
-		$db=mysqli_connect('localhost','root','root','bbs') or
-		die(mysqli_error($db));
+    $dbh = new PDO("mysql:host=localhost;dbname=bbs","root", "root");
 
-		#文字コードの設定
-		mysqli_set_charset($db,'utf-8');
 
-		$records=mysqli_fetch_assoc(mysqli_query($db,"SELECT * FROM user_data WHERE id='{$id}';"));
+    $sql = 'SELECT password FROM user_data where id=:id;';
+    $sth = $dbh->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+    $sth->execute(array(':id' => $id));
+    $result = $sth->fetch(PDO::FETCH_ASSOC);
 
 		#パスワードの比較
-		if (strcmp($records['password'],hash("SHA512",$pw))==0){
+		if (strcmp($result['password'],hash("SHA512",$pw))==0){
 			$flag=true;//idとパスワードの組み合わせが一致した
 		}
 
